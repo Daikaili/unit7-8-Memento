@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
       private ListView  lvResult;
       MyDatabaseHelper   mydbHelper;
       LinearLayout title;
+      Editable contentResolver;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -55,7 +56,7 @@ public class MainActivity extends Activity {
 				values.put(Memento.Memento1.SUBJECT, editSubject.getText().toString());
 				values.put(Memento.Memento1.BOBY, editBody.getText().toString());
 				values.put(Memento.Memento1.DATE, editTime.getText().toString());
-				Editable contentResolver;
+				
 				//values中存值
 				contentResolver.insert(Memento.Memento1.MEMENTO_CONTENT_URI,values);
 				Toast.makeText(MainActivity.this, "添加生词成功",1000).show();
@@ -63,7 +64,23 @@ public class MainActivity extends Activity {
 			
 		});
 		//事件监听器
-		
+		btnQuery.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Cursor cursor=contentResolver.query(
+						Memento.Memento1.MEMENTO_CONTENT_URI,null,null,null,null);
+				SimpleCursorAdapter resultAdapter=new SimpleCursorAdapter(MainActivity.this, 
+						R.layout.result, cursor,new String[]{
+						Memento.Memento1._ID,
+						Memento.Memento1.BOBY,Memento.Memento1.SUBJECT,Memento.Memento1.DATE
+				},new int[]{
+						R.id.memento_num,R.id.memento_subject,R.id.memento_bady,R.id.memento_date
+			});
+				lvResult.setAdapter(resultAdapter);
+			}
+		});
 		btnTime.setOnClickListener(new OnClickListener() {
 
 
