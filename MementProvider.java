@@ -32,7 +32,15 @@ public class MementProvider extends ContentProvider {
 	public String getType(Uri uri) {
 
 		// TODO Auto-generated method stub
-		return null;
+		switch(matcher.match(uri)){
+		case MEMENTO:
+			return"vnd.android.cursor.dir/memento";
+		case MEMENTO1:
+			return"vnd.android.cursor.item/memento1";
+			default:
+				throw new IllegalArgumentException("δ֪Uri:"+uri);
+		}
+	
 	}
 
 	/* (non-Javadoc)
