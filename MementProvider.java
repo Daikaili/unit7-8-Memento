@@ -35,6 +35,10 @@ public class MementProvider extends ContentProvider {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see android.content.ContentProvider#insert(android.net.Uri, android.content.ContentValues)
+	 * 添加记录
+	 */
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 
@@ -68,12 +72,33 @@ public class MementProvider extends ContentProvider {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see android.content.ContentProvider#update(android.net.Uri, android.content.ContentValues, java.lang.String, java.lang.String[])
+	 * 更新记录
+	 */
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 
 			String[] selectionArgs) {
 		// TODO Auto-generated method stub
-		return 0;
+		int num=0;
+		switch(matcher.match(uri)){
+		case MEMENTO:
+			num=db.update("memento.db", values, selection, selectionArgs);
+			break;
+		case MEMENTO1:
+			long id=ContentUris.parseId(uri);
+			String where=Memento.Memento1._ID+"="+id;
+			if(selection!=null&&!"".equals(selection)){
+				where=where+"and"+selection;
+			}
+			num=db.update("memento.db", values, where, selectionArgs);
+			break;
+			default:
+				throw new IllegalArgumentException("未知Uri:"+uri);
+		}
+		getContext().getContentResolver().notifyChange(uri, null);
+       return num;
 	}
 
 }
