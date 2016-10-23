@@ -1,6 +1,7 @@
 package com.example.meto;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.UriMatcher;
 
 import android.content.ContentValues;
@@ -38,6 +39,14 @@ public class MementProvider extends ContentProvider {
 	public Uri insert(Uri uri, ContentValues values) {
 
 		// TODO Auto-generated method stub
+		long rowId=db.insert("memento.db", Memento.Memento1._ID, values);
+		//Ìí¼Ó¼ÇÂ¼
+		if(rowId>0){
+			Uri mementoUri=ContentUris.withAppendedId(uri, rowId);
+			getContext().getContentResolver().notifyChange(mementoUri, null);
+			return mementoUri;
+			}
+	
 		return null;
 	}
 
