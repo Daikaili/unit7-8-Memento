@@ -69,7 +69,21 @@ public class MementProvider extends ContentProvider {
 
 			String[] selectionArgs, String sortOrder) {
 		// TODO Auto-generated method stub
-		return null;
+		switch(matcher.match(uri)){
+		case MEMENTO:
+			return db.query("memento.db", projection, selection, selectionArgs, null, null, sortOrder);
+		case MEMENTO1:
+			long id=ContentUris.parseId(uri);
+			String where=Memento.Memento1._ID+"="+id;
+			if(selection!=null&&!"".equals(selection)){
+				where=where+"and"+selection;
+			}
+			return db.query("memento.db", projection, selection, selectionArgs, null, null, sortOrder);
+			
+			default:
+				throw new IllegalArgumentException("δ֪URI:"+uri);
+		}
+
 	}
 
 	/* (non-Javadoc)
